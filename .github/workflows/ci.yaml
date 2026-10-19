@@ -27,10 +27,22 @@ jobs:
           python-version: "3.12"
           cache: pip
       - run: pip install -r requirements.txt
-      - run: pytest -v --junitxml=report.xml
+      - run: pytest -m "not quarantine" -v --junitxml=report.xml
       - name: Save test report
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: junit-report
           path: report.xml
+
+  quarantine:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - run: pytest -m quarantine -v
