@@ -17,7 +17,7 @@ jobs:
       - run: pip install ruff
       - run: ruff check .
 
-    unit:
+  unit:
     needs: lint
     runs-on: ubuntu-latest
     steps:
@@ -27,7 +27,7 @@ jobs:
           python-version: "3.12"
           cache: pip
       - run: pip install -r requirements.txt
-      - run: pytest --junitxml=report.xml
+      - run: pytest -v --junitxml=report.xml
       - name: Save test report
         if: always()
         uses: actions/upload-artifact@v4
